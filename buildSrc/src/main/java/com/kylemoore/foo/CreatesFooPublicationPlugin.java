@@ -15,10 +15,17 @@ public class CreatesFooPublicationPlugin implements Plugin<Project> {
     project.getPlugins().apply(JavaPlugin.class);
     project.getPlugins().apply(IvyPublishPlugin.class);
     PublishingExtension publishing = project.getExtensions().getByType(PublishingExtension.class);
-    publishing.getPublications().create("foo", IvyPublication.class, p -> {
+    IvyPublication fooPublication = publishing.getPublications().create("foo", IvyPublication.class, p -> {
       p.from(project.getComponents().getByName("java"));
     });
     project.getTasks().withType(GenerateModuleMetadata.class).configureEach(t -> t.setEnabled(false));
+
+    // now, add a custom configuration to the publication
+    //configureFooPublication(fooPublication);
+  }
+
+  private void configureFooPublication(IvyPublication fooPublication) {
+    fooPublication.configurations(configurations -> configurations.create("docs"));
   }
 
 }
