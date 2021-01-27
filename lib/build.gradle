@@ -1,0 +1,24 @@
+plugins {
+  id 'java-library'
+  id 'creates-foo-publication'
+}
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+    // Use JUnit test framework.
+    testImplementation 'junit:junit:4.13'
+
+    api 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'com.google.guava:guava:29.0-jre'
+}
+
+// add an additional configuration to the existing 'foo' publication
+publishing.publications.withType(IvyPublication).named('foo') {
+  configurations {
+    'foo-conf' {}
+  }
+  artifact source: 'some-generated-file.xml', name: 'some-generated-file', type: 'foo-file', extension: 'xml', conf: 'foo-conf'
+}
